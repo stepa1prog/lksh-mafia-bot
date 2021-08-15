@@ -13,11 +13,13 @@ from typing import Dict, List
 
 class Game:
     role_count: Dict[str, int]
+    user_count: int
     joined_user_ids: List[str]
     role_by_user_id: Dict[str, str]  # заполняется, когда игра начинается, то есть все игроки присоединились
 
     def __init__(self):
         self.role_count = dict()
+        self.user_count = 0
         self.joined_user_ids = list()
         self.role_by_user_id = dict()
 
