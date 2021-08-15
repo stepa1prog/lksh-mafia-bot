@@ -32,7 +32,7 @@ class UserStatus(Enum):
 class User:
     user_id: str
     status: UserStatus
-    in_game_id: str or None  # str if status == IN_GAME and None otherwise
+    in_game_id: str or None  # str if status == JOINED and None otherwise
     creating_game: Game or None  # Game if status == CREATING and None otherwise
 
     def __init__(self, user_id):

@@ -21,6 +21,11 @@ def help_handler(update: Update, context: CallbackContext) -> None:
 def create_handler(update: Update, context: CallbackContext) -> None:
     user_id = update.message.chat_id
     user = state.get_user(user_id)
+
+    if user.in_game_id is not None:
+        # тут нужно удалить пользователя из старой игры
+        pass
+
     user.status = UserStatus.CREATING
     # тут надо отправить сообщение о том, что делать пользователю дальше
 
@@ -28,6 +33,11 @@ def create_handler(update: Update, context: CallbackContext) -> None:
 def join_handler(update: Update, context: CallbackContext) -> None:
     user_id = update.message.chat_id
     user = state.get_user(user_id)
+
+    if user.in_game_id is not None:
+        # тут нужно удалить пользователя из старой игры
+        pass
+
     user.status = UserStatus.JOINING
     # тут надо отправить сообщение о том, что делать пользователю дальше
 
