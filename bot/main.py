@@ -1,6 +1,6 @@
 from pathlib import Path
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters
 import bot.messages as messages
 
 
@@ -23,6 +23,11 @@ def join_handler(update: Update, context: CallbackContext) -> None:
     pass
 
 
+def text_handler(update: Update, context: CallbackContext) -> None:
+    print(update.message.text)
+    pass
+
+
 def main() -> None:
     token = read_token()
     updater = Updater(token)
@@ -31,6 +36,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler(['start', 'help'], help_handler))
     dispatcher.add_handler(CommandHandler('create', create_handler))
     dispatcher.add_handler(CommandHandler('join', join_handler))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, text_handler))
 
     updater.start_polling()
     updater.idle()
