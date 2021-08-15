@@ -2,6 +2,9 @@ from pathlib import Path
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters
 import bot.messages as messages
+from bot.create import create_game
+from bot.join import join_game
+from bot.state import *
 
 
 def read_token() -> str:
@@ -16,16 +19,29 @@ def help_handler(update: Update, context: CallbackContext) -> None:
 
 
 def create_handler(update: Update, context: CallbackContext) -> None:
-    pass
+    user_id = update.message.chat_id
+    user = state.get_user(user_id)
+    user.status = UserStatus.CREATING
+    # тут надо отправить сообщение о том, что делать пользователю дальше
 
 
 def join_handler(update: Update, context: CallbackContext) -> None:
-    pass
+    user_id = update.message.chat_id
+    user = state.get_user(user_id)
+    user.status = UserStatus.JOINING
+    # тут надо отправить сообщение о том, что делать пользователю дальше
 
 
 def text_handler(update: Update, context: CallbackContext) -> None:
-    print(update.message.text)
-    pass
+    user_id = update.message.chat_id
+    user = state.get_user(user_id)
+
+    if user.status == UserStatus.CREATING:
+        create_game(update, update.message.text, user)
+    elif user.status == UserStatus.JOINING:
+        join_game(update, update.message.text, user)
+    else:
+        help_handler(update, context)
 
 
 def main() -> None:
