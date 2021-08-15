@@ -1,10 +1,10 @@
+from bot.create import create_game
+from bot.join import join_game
+from bot.state import *
 from pathlib import Path
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext, MessageHandler, Filters
 import bot.messages as messages
-from bot.create import create_game
-from bot.join import join_game
-from bot.state import *
 
 
 def read_token() -> str:
