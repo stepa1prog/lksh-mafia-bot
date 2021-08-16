@@ -102,9 +102,9 @@ class State:
     def generate_game_id(self):
 
         def gen_random_string(n: int):
-            return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(n))
+            return ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(n))
 
-        length = 1
+        length = 2
         game_id = gen_random_string(length)
 
         while game_id in self.used_game_ids:
