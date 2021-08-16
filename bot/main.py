@@ -22,24 +22,29 @@ def create_handler(update: Update, context: CallbackContext) -> None:
     user_id = update.message.chat_id
     user = state.get_user(user_id)
 
-    if user.in_game_id is not None:
-        # тут нужно удалить пользователя из старой игры
-        pass
+    if user.status == UserStatus.CREATING:
+        update.message.reply_text(messages.ALREADY_CREATING)
+        return
+
+    if user.status in (UserStatus.JOINING, UserStatus.JOINED):
+        user.clear_status()
 
     user.status = UserStatus.CREATING
-    # тут надо отправить сообщение о том, что делать пользователю дальше
+    update.message.reply_text(messages.CREATE_HELP)
 
 
 def join_handler(update: Update, context: CallbackContext) -> None:
     user_id = update.message.chat_id
     user = state.get_user(user_id)
 
-    if user.in_game_id is not None:
-        # тут нужно удалить пользователя из старой игры
-        pass
+    if user.status in (UserStatus.JOINING, UserStatus.JOINED):
+        user.clear_status()
+
+    if user.status == UserStatus.CREATING:
+        user.creating_game = None
 
     user.status = UserStatus.JOINING
-    # тут надо отправить сообщение о том, что делать пользователю дальше
+    update.message.reply_text(messages.JOIN_HELP)
 
 
 def text_handler(update: Update, context: CallbackContext) -> None:
